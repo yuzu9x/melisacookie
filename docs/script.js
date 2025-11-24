@@ -1,4 +1,4 @@
-const socket = io("https://melisacookieee.onrender.com");
+const socket = io("https://melisacookie-1.onrender.com");
 // My base functionalities for the cookie decorating
 const COOKIE_COUNT = 6;
 let currentCookie = 0;
