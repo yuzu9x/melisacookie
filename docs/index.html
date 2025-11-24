@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melisa's Cookies(⚗ ˘ ⚗)</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    font-family: 'Apple Chancery', cursive;
+  background-image: url('/images/cats.jpg');
+  background-size: 200px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFE4E1 50%, #FFF0F5 100%);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-bottom: 4px solid #FF69B4;
+  position: relative;
+  z-index: 100;
+  font-family: 'Apple Chancery', cursive;
+}
+
+.title {
+  font-size: 3em;
+  color: #8B4513;
+  text-shadow: 3px 3px 0px #FFE4E1,
+               4px 4px 0px #FFB6C1,
+               5px 5px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  animation: titleBounce 2s ease-in-out infinite;
+  font-family: 'Apple Chancery', cursive;
+}
+
+@keyframes titleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.status-bar {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.status-item {
+  background: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+#connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#connection-status.connected {
+  color: #28a745;
+}
+
+#connection-status.disconnected {
+  color: #dc3545;
+}
+
+#connection-status.connecting {
+  color: #ffc107;
+}
+
+/* Main Container */
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 20px;
+  padding: 30px 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Control Panels */
+.control-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 3px solid #FFB6C1;
+  position: sticky;
+  top: 20px;
+}
+
+.control-panel h3 {
+  color: #8B4513;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #FFE4E1;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.label-text {
+  display: block;
+  font-weight: 600;
+  color: #8B4513;
+  margin-bottom: 8px;
+  font-size: 0.95em;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#color-picker {
+  width: 100%;
+  height: 50px;
+  border: 3px solid #FFB6C1;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#color-picker:hover {
+  transform: scale(1.05);
+}
+
+#brush-size {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #FFE4E1, #FFB6C1);
+  outline: none;
+  cursor: pointer;
+}
+
+#brush-size::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FF69B4;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#brush-size::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FF69B4;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.value-display {
+  text-align: center;
+  font-weight: bold;
+  color: #FF69B4;
+  font-size: 1.1em;
+}
+
+/* Brush Buttons */
+.brush-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brush-btn {
+  padding: 12px;
+  border: 2px solid #FFB6C1;
+  background: white;
+  color: #8B4513;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95em;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.brush-btn:hover {
+  background: #FFF0F5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.brush-btn.active {
+  background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+  color: white;
+  border-color: #FF1493;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+}
+
+.btn-icon {
+  font-size: 1.2em;
+}
+
+/* Preset Colors */
+.preset-colors {
+  margin-top: 20px;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.color-preset {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-preset:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Action Buttons */
+.action-btn {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clear-single {
+  background: linear-gradient(135deg, #87CEEB, #4682B4);
+  color: white;
+}
+
+.clear-single:hover {
+  background: linear-gradient(135deg, #4682B4, #1E90FF);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(70, 130, 180, 0.4);
+}
+
+.clear-all {
+  background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+  color: white;
+}
+
+.clear-all:hover {
+  background: linear-gradient(135deg, #FF69B4, #FF1493);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 105, 180, 0.4);
+}
+
+/* Info Box */
+.info-box {
+  background: linear-gradient(135deg, #FFF0F5, #FFE4E1);
+  border-left: 4px solid #FF69B4;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #8B4513;
+}
+
+.info-box p {
+  margin-bottom: 5px;
+}
+
+.info-box strong {
+  color: #FF69B4;
+}
+
+/* Cookie Section */
+.cookie-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tray-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 3px solid #FFB6C1;
+}
+
+#cookie-tray {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.cookie-container {
+  background: linear-gradient(135deg, #F4A460, #D2691E);
+  border-radius: 50%;
+  padding: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.cookie-container::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+  pointer-events: none;
+}
+
+.cookie-container:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.cookie-container.active {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 12px 30px rgba(255, 105, 180, 0.5);
+  border: 4px solid #FF69B4;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 12px 30px rgba(255, 105, 180, 0.5); }
+  50% { box-shadow: 0 12px 35px rgba(255, 105, 180, 0.7); }
+}
+
+.cookie-canvas {
+  border-radius: 50%;
+  background: #F4E4C1;
+  cursor: crosshair;
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tray-hint {
+  text-align: center;
+  color: #8B4513;
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: 15px;
+  background: linear-gradient(135deg, #FFF0F5, #FFE4E1);
+  border-radius: 10px;
+  border: 2px solid #FFB6C1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .control-panel {
+    position: static;
+  }
+
+  #cookie-tray {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 768px) {
+  #cookie-tray {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 1.5em;
+  }
+
+  .status-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tray-container {
+    padding: 20px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">✩*ೃ˚.˚ଘo(∗  ❛ั ᵕ ❛ั )੭່˙𝓂𝑒𝓁𝒾𝓈𝒶'𝓈 𝒸𝑜𝑜𝓀𝒾𝑒𝓈!˚.*ೃ</h1>
+    <div class="status-bar">
+      <div class="status-item">
+        <span id="connection-status" class="connecting">⚪ Connecting...</span>
+      </div>
+      <div class="status-item">
+        <span id="user-count">0 bakers online</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Left Controls -->
+    <div class="left-controls control-panel">
+      <h3>Decorating Tools</h3>
+      
+      <div class="control-group">
+        <label>
+          <span class="label-text">Icing Color</span>
+          <input type="color" id="color-picker" value="#8B4513">
+        </label>
+      </div>
+      
+      <div class="control-group">
+        <label>
+          <span class="label-text">Brush Size</span>
+          <input type="range" id="brush-size" min="1" max="20" value="3">
+          <span id="brush-size-value" class="value-display">3</span>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <span class="label-text">Brush Style</span>
+        <div class="brush-buttons">
+          <button id="brush-normal" class="brush-btn active">
+            <span class="btn-icon">🖌️</span>
+            Regular
+          </button>
+          <button id="brush-sprinkles" class="brush-btn">
+            <span class="btn-icon">✨</span>
+            Sprinkles
+          </button>
+        </div>
+      </div>
+
+      <div class="preset-colors">
+        <span class="label-text">Set Palette</span>
+        <div class="color-grid">
+          <button class="color-preset" data-color="#8B4513" style="background: #8B4513;" title="Chocolate"></button>
+          <button class="color-preset" data-color="#FF69B4" style="background: #FF69B4;" title="Pink"></button>
+          <button class="color-preset" data-color="#87CEEB" style="background: #87CEEB;" title="Sky Blue"></button>
+          <button class="color-preset" data-color="#FFD700" style="background: #FFD700;" title="Gold"></button>
+          <button class="color-preset" data-color="#FF6347" style="background: #FF6347;" title="Red"></button>
+          <button class="color-preset" data-color="#9370DB" style="background: #9370DB;" title="Purple"></button>
+          <button class="color-preset" data-color="#98FB98" style="background: #98FB98;" title="Green"></button>
+          <button class="color-preset" data-color="#FFFFFF" style="background: #FFFFFF; border: 2px solid #ddd;" title="White"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cookie Tray -->
+    <div class="cookie-section">
+      <div class="tray-container">
+        <div id="cookie-tray"></div>
+        <div class="tray-hint">✧･ﾟ:*𝓬𝓵𝓲𝓬𝓴 𝓪𝓷𝔂 𝓬𝓸𝓸𝓴𝓲𝓮 𝓽𝓸 𝓼𝓽𝓪𝓻𝓽 𝓭𝓮𝓬𝓸𝓻𝓪𝓽𝓲𝓷𝓰! (ꈍ ꒳ ꈍ✿)*:･ﾟ✧*</div>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="right-controls control-panel">
+      <h3>Cookie Actions</h3>
+      
+      <button id="clear-cookie" class="action-btn clear-single">
+        <span class="btn-icon">🧽</span>
+        Clear This Cookie
+      </button>
+      
+      <button id="clear-all" class="action-btn clear-all">
+        <span class="btn-icon">🗑️</span>
+        Clear All Cookies
+      </button>
+
+      <div class="info-box">
+        <p><strong>💡 Info:</strong></p>
+        <p>Your cookies are shared with everyone in real-time...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+ 
+  <script src="script.js"></script>
+</body>
+</html>
